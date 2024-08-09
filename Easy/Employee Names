@@ -1,0 +1,1 @@
+SELECT E.name FROM EMPLOYEE as E ORDER BY E.name ASC;
