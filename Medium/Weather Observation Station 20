@@ -1,0 +1,18 @@
+SET @count = (SELECT COUNT(*) FROM station);
+WITH cte AS (
+    SELECT
+        lat_n,
+        ROW_NUMBER() OVER(ORDER BY lat_n) rnum
+    FROM station
+)
+SELECT
+    CASE
+        WHEN @count % 2 = 1 THEN (
+            SELECT ROUND(lat_n, 4) FROM cte
+            WHERE rnum = @count / 2
+        )
+        WHEN @count % 2 = 0 THEN (
+            SELECT ROUND(AVG(lat_n), 4) FROM cte
+            WHERE rnum = @count / 2 OR rnum = @count / 2 + 1
+        )
+    END;
