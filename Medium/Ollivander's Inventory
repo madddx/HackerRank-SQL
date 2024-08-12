@@ -1,0 +1,1 @@
+with cte as( select w.*, row_number() over (partition by code,power order by coins_needed) as rn from Wands w) select a.id, b.age, a.coins_needed, a.power from cte a join Wands_Property b on a.code = b.code where b.is_evil = 0 and a.rn = 1 order by power desc, age desc;
