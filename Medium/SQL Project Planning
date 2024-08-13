@@ -1,0 +1,28 @@
+with cte as (
+    select
+        start_date,
+        end_date,
+        end_date - dense_rank() over (order by end_date) as denseDate
+    from projects
+),
+cte2 as (
+    select
+        min(start_date) as minDate,
+        max(end_date) as maxDate,
+        denseDate
+    from cte
+    group by denseDate
+),
+cte3 as (
+    select
+        *,
+        DateDiff(maxDate, minDate) as diffDays
+    from cte2
+)
+select
+    minDate,
+    maxDate
+from cte3
+order by
+    diffDays,
+    minDate;
