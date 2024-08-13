@@ -1,0 +1,4 @@
+select x,y from functions where x<y and (x,y) in (select y,x from functions)
+union 
+select x,y from functions group by x,y having count(*)%2=0
+order by x
