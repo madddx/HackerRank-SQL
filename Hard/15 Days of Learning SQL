@@ -1,0 +1,30 @@
+SELECT 
+    submission_date,
+    (
+        SELECT COUNT(DISTINCT hacker_id) 
+        FROM Submissions S1 
+        WHERE S1.submission_date = S.submission_date 
+        AND (
+            SELECT COUNT(DISTINCT submission_date) 
+            FROM Submissions S2 
+            WHERE S1.hacker_id = S2.hacker_id 
+            AND S2.submission_date < S.submission_date
+        ) = DATEDIFF(S.submission_date, (SELECT MIN(submission_date) FROM Submissions S3))
+    ) AS dailyhackerstillthisdate,
+    (
+        SELECT hacker_id 
+        FROM Submissions S1 
+        WHERE S1.submission_date = S.submission_date 
+        GROUP BY hacker_id 
+        ORDER BY COUNT(submission_id) DESC, hacker_id 
+        LIMIT 1
+    ) AS HackerID,
+    (
+        SELECT name 
+        FROM Hackers 
+        WHERE hacker_id = HackerID
+    ) AS name
+FROM 
+    (SELECT DISTINCT submission_date FROM Submissions) S
+ORDER BY 
+    submission_date;
