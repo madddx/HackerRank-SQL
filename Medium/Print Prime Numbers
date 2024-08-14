@@ -1,0 +1,13 @@
+WITH RECURSIVE Series AS(
+SELECT 2 AS n 
+UNION 
+SELECT n+1 FROM Series 
+WHERE n<1000
+) 
+SELECT GROUP_CONCAT(n SEPARATOR '&') FROM(
+SELECT n FROM Series AS Numbers 
+WHERE NOT EXISTS(
+SELECT n FROM Series AS Divisors 
+WHERE Numbers.n%Divisors.n=0 AND Divisors.n<Numbers.n
+)
+)AS A;
