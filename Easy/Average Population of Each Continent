@@ -1,0 +1,1 @@
+select DISTINCT COUNTRY.Continent, FLOOR(AVG(CITY.Population) OVER(PARTITION BY COUNTRY.Continent)) from CITY join COUNTRY on CITY.CountryCode = COUNTRY.Code
