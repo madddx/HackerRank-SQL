@@ -1,0 +1,1 @@
+ SELECT IF((A+B <= C) or (B+C <= A),'Not A Triangle', (IF(A=B and B=C,'Equilateral', (IF(A=B or B=C or C=A,'Isosceles','Scalene')) ) ) ) from TRIANGLES ;
